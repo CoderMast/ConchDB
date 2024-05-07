@@ -1,15 +1,24 @@
 <script lang="ts" setup>
-import {reactive} from 'vue'
-import {Greet} from '../../wailsjs/go/main/App'
+import {reactive, ref} from 'vue'
+import {Greet,ConnectionMySQL} from '../../wailsjs/go/main/App'
 
 const data = reactive({
   name: "",
-  resultText: "Please enter your name below 👇",
+  resultText: "Please enter your Database info 👇",
+})
+
+// 数据库连接信息
+const database = reactive({
+  dbtype: "",
+  username: "",
+  password: "",
+  dbname: "",
+  resultText: "",
 })
 
 function greet() {
-  Greet(data.name).then(result => {
-    data.resultText = result
+  ConnectionMySQL(database.dbtype,database.username,database.password,database.dbname).then(result => {
+    database.resultText = result
   })
 }
 
@@ -19,9 +28,13 @@ function greet() {
   <main>
     <div id="result" class="result">{{ data.resultText }}</div>
     <div id="input" class="input-box">
-      <input id="name" v-model="data.name" autocomplete="off" class="input" type="text"/>
+      <div>数据库类型：<input id="name" v-model="database.dbtype" autocomplete="off" class="input" type="text"/></div>
+      <div>用户名：<input id="name" v-model="database.username" autocomplete="off" class="input" type="text"/></div>
+      <div>密码：<input id="name" v-model="database.password" autocomplete="off" class="input" type="text"/></div>
+      <div>数据库名：<input id="name" v-model="database.dbname" autocomplete="off" class="input" type="text"/></div>
       <button class="btn" @click="greet">Greet</button>
     </div>
+    <div id="result" class="result">{{ database.resultText }}</div>
   </main>
 </template>
 
