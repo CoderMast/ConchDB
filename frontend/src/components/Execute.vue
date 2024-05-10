@@ -44,11 +44,11 @@ function execute() {
 }
 
 // SQL 语句执行记录
-var executeList = reactive([]);
+let executeList = ref(new Array<string>());
 
 // 增加 SQL 执行记录
 function addSqlExecuteLog(){
-    executeList.push(sql.value)
+    executeList.value.push(sql.value)
 }
 </script>
 
