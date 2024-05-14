@@ -1,8 +1,8 @@
-# 🐚ConchDB 桌面端轻量级跨平台数据库管理工具
+# 🐚ConchDBM 桌面端轻量级跨平台数据库管理工具
 
 ## 项目介绍
 
-ConchDB 是一款基于 Golang 语言、Wails 框架、Vue 前端框架开发的一款桌面端轻量级跨平台数据库管理工具。
+ConchDBM（Conch Database Management） 是一款基于 Golang 语言、Wails 框架、Vue 前端框架开发的一款桌面端轻量级跨平台数据库管理工具。
 
 ## 功能特性
 
@@ -23,7 +23,7 @@ ConchDB 是一款基于 Golang 语言、Wails 框架、Vue 前端框架开发的
 1. 克隆仓库到本地
 
 ```shell
-git clone https://github.com/CoderMast/ConchDB.git
+git clone https://github.com/CoderMast/ConchDBM.git
 ```
 
 2. 开始编译构建
