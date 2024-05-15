@@ -32,7 +32,7 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:  "Conch DB Management",
+		Title:  "Conch Database Management",
 		Width:  1024,
 		Height: 768,
 		AssetServer: &assetserver.Options{
@@ -47,7 +47,7 @@ func main() {
 		Mac: &mac.Options{
 			TitleBar: mac.TitleBarDefault(),
 			About: &mac.AboutInfo{
-				Title:   "Conch DBM Management",
+				Title:   "Conch Database Management",
 				Message: "A modern lightweight cross-platform Database desktop client.\n 一个现代化轻量级跨平台的数据库桌面客户端。\n\nCopyright © 2024 \n Author By CoderMast",
 				Icon:    icon,
 			},
@@ -56,7 +56,7 @@ func main() {
 		},
 		// 配置 Linux 下的桌面选项
 		Linux: &linux.Options{
-			ProgramName:         "Conch DB Management",
+			ProgramName:         "Conch Database Management",
 			Icon:                icon,
 			WebviewGpuPolicy:    linux.WebviewGpuPolicyOnDemand,
 			WindowIsTranslucent: true,
