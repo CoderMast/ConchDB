@@ -28,10 +28,11 @@ func (c *Connection) Startup(ctx context.Context) {
 var dbConnection *sql.DB
 
 // Connection 连接 MySQL 数据库
-func (c *Connection) Connection(dbtype string, username string, password string, dbname string) string {
+func (c *Connection) Connection(dbtype string, host string, port string, username string, password string, dbname string) string {
 
 	// 拼接连接信息
-	var connectionInfo = username + ":" + password + "@tcp(127.0.0.1:3306)/" + dbname
+	var connectionInfo = username + ":" + password + "@tcp(" + host + ":" + port + ")/" + dbname
+
 	// 连接数据库
 	db, err := sql.Open(dbtype, connectionInfo)
 
