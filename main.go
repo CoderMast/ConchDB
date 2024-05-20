@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ConchDB/backend/services"
+	"ConchDBM/backend/services"
 	"embed"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/menu"

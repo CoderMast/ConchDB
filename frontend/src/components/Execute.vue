@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {reactive, ref} from 'vue'
-import {Execute} from "../../wailsjs/go/services/Connection";
+import { ref } from 'vue'
+import { Execute } from "../../wailsjs/go/services/Connection";
 
-import {ElMessage} from "element-plus";
+import { useMessage } from 'naive-ui';
 
-
+const message = useMessage();
 
 // 执行 SQL
 const sql = ref("select * from users;");
@@ -27,17 +27,13 @@ function execute() {
       sqlResult.value = jsonResult;
       sqlResultHead.value = jsonResult[0];
       sqlResultBody.value = jsonResult.slice(1);
-      ElMessage(
-          {
-            message: "执行成功！",
-            type: "success"
-          }
-      )
+
+
+      // 执行成功提示
+      message.success("执行成功！");
     } else {
-      ElMessage({
-        type: "error",
-        message: result,
-      })
+      // 执行失败的提示信息
+      message.error(result)
       console.log(result)
     }
   })
@@ -47,34 +43,29 @@ function execute() {
 let executeList = ref(new Array<string>());
 
 // 增加 SQL 执行记录
-function addSqlExecuteLog(){
-    executeList.value.push(sql.value)
+function addSqlExecuteLog() {
+  executeList.value.push(sql.value)
 }
 </script>
 
 <template>
 
-  <el-row>
-    <el-col :span="8">执行SQL</el-col>
-    <el-col :span="16">
-      <el-input type="text" v-model="sql"/>
-    </el-col>
-  </el-row>
-  <el-button type="primary" @click="execute">执行SQL</el-button>
-  <hr/>
+  <n-row style="width: 80vw;margin: 0 auto;">
+    <n-col :span="8" style="margin: auto">请输入你要执行的SQL语句：</n-col>
+    <n-col :span="16" style="display: flex;margin: auto">
+      <n-input type="text" v-model="sql" />
+      <n-button type="primary" @click="execute">执行SQL</n-button>
+    </n-col>
+  </n-row>
+
 
   <!-- 表单渲染 -->
-  <el-table :data="sqlResultBody" style="width: 100%">
-    <el-table-column v-for="item in sqlResultHead" :prop="item" :label="item" />
-  </el-table>
+  <!-- <n-data-table :columns="sqlResultBody[0]" :data="sqlResultBody" style="width: 100%" /> -->
 
-  <hr/>
   <!-- 日志渲染 -->
-  <el-card style="max-width: 50vw">
-    <p align="center" v-for="(item,index) in executeList" :key="index" class="text item">{{ item }}</p>
-  </el-card>
+  <!-- <n-card style="width: 100vw">
+    <p style="text-align: center;" v-for="(item, index) in executeList" :key="index" class="text item">{{ item }}</p>
+  </n-card> -->
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

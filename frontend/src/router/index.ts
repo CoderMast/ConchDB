@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import ConnectionVue from '../components/ConnectionVue.vue';
+import Connection from '../components/Connection.vue';
 import Execute from '../components/Execute.vue';
 
 const routes = [
     {
         path: '/',
         name: 'Connection',
-        component: ConnectionVue
+        component: Connection
     },
     {
         path: '/execute',

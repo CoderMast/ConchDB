@@ -1,4 +1,4 @@
-module ConchDB
+module ConchDBM
 
 go 1.21
 
