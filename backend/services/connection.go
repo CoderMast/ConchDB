@@ -3,10 +3,21 @@ package services
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
 )
+
+// 定义数据库连接对象
+type SQLConnectObject struct {
+	Driver   string `json:"driver"`   // 数据库驱动类型
+	Host     string `json:"host"`     // 数据库地址
+	Port     string `json:"port"`     // 数据库端口
+	Username string `json:"username"` // 数据库用户名
+	Password string `json:"password"` // 数据库密码
+	Database string `json:"database"` // 数据库名
+}
 
 // Connection struct
 type Connection struct {
@@ -28,13 +39,20 @@ func (c *Connection) Startup(ctx context.Context) {
 var dbConnection *sql.DB
 
 // Connection 连接 MySQL 数据库
-func (c *Connection) Connection(dbtype string, host string, port string, username string, password string, dbname string) string {
+func (c *Connection) Connection(sqlObjStr string) string {
+	var sqlObj SQLConnectObject
+
+	err := json.Unmarshal([]byte(sqlObjStr), &sqlObj)
+
+	if err != nil {
+		return fmt.Sprintf("%s!", err)
+	}
 
 	// 拼接连接信息
-	var connectionInfo = username + ":" + password + "@tcp(" + host + ":" + port + ")/" + dbname
+	var connectionInfo = sqlObj.Username + ":" + sqlObj.Password + "@tcp(" + sqlObj.Host + ":" + sqlObj.Port + ")/" + sqlObj.Database
 
 	// 连接数据库
-	db, err := sql.Open(dbtype, connectionInfo)
+	db, err := sql.Open(sqlObj.Driver, connectionInfo)
 
 	if err != nil {
 		return fmt.Sprintf("%s!", err)
@@ -46,7 +64,7 @@ func (c *Connection) Connection(dbtype string, host string, port string, usernam
 		return fmt.Sprintf("%s!", err)
 	}
 	dbConnection = db
-	return fmt.Sprintf("Successfully connected to %s!", dbtype)
+	return fmt.Sprintf("Successfully connected to %s!", sqlObj.Driver)
 }
 
 // Execute 执行SQL

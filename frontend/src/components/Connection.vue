@@ -3,24 +3,26 @@ import router from '../router/index'
 import { reactive, watch } from 'vue'
 import { Connection } from '../../wailsjs/go/services/Connection'
 import { useMessage } from 'naive-ui'
+import { SQLConnectObject } from '../entity/SQLConnectionObject'
 
 const message = useMessage();
 
 // 数据库连接信息
-const database = reactive({
-  dbtype: "mysql",
+const sqlConnectObject = reactive<SQLConnectObject>({
+  driver: "mysql",
   host: "localhost",
   port: "3306",
   username: "codermast",
   password: "123456",
-  dbname: "image_bed",
+  database: "image_bed",
 })
 
 // 是否连接成功
 let isSuccess = false;
 
 function connection() {
-  Connection(database.dbtype, database.host, database.port, database.username, database.password, database.dbname).then(result => {
+  console.log(JSON.stringify(sqlConnectObject))
+  Connection(JSON.stringify(sqlConnectObject)).then(result => {
     if (result.substring(0, 12) == "Successfully") {
       // 1. 连接成功，弹出提示信息
       message.success(result);
@@ -46,13 +48,13 @@ const dbTypeOptions = [
 // 重置
 function reset() {
   console.log("reset 被调用")
-  Object.assign(database, {
-    dbtype: "mysql",
+  Object.assign(sqlConnectObject, {
+    driver: "mysql",
     host: "localhost",
     port: "3306",
     username: "codermast",
     password: "123456",
-    dbname: "image_bed",
+    database: "image_bed",
   })
 }
 
@@ -74,7 +76,7 @@ function submit() {
 
 // 监视器
 watch(
-  () => database,
+  () => sqlConnectObject,
   (newValue, oldValue) => {
     // database 发生变化后，这里被调用
     isSuccess = false;
@@ -92,27 +94,28 @@ watch(
     <n-form label-placement="left" label-width="auto" style="max-width: 600px;" require-mark-placement="right-hanging">
 
       <n-form-item label="数据库类型">
-        <n-select v-model:value="database.dbtype" :options="dbTypeOptions" placeholder="请选择您的数据库驱动!" type="text" />
+        <n-select v-model:value="sqlConnectObject.driver" :options="dbTypeOptions" placeholder="请选择您的数据库驱动!"
+          type="text" />
       </n-form-item>
 
       <n-form-item label="地址(IP)：">
-        <n-input id="host" v-model:value="database.host" placeholder="请输入数据库的 IP 地址!" type="text" />
+        <n-input id="host" v-model:value="sqlConnectObject.host" placeholder="请输入数据库的 IP 地址!" type="text" />
       </n-form-item>
 
       <n-form-item label="端口：">
-        <n-input id="port" v-model:value="database.port" placeholder="请输入数据库的端口!" type="text" />
+        <n-input id="port" v-model:value="sqlConnectObject.port" placeholder="请输入数据库的端口!" type="text" />
       </n-form-item>
 
       <n-form-item label="用户名：">
-        <n-input id="username" v-model:value="database.username" placeholder="请输入数据库用户名!" type="text" />
+        <n-input id="username" v-model:value="sqlConnectObject.username" placeholder="请输入数据库用户名!" type="text" />
       </n-form-item>
       <div>
         <n-form-item label="密码：">
-          <n-input id="password" v-model:value="database.password" placeholder="请输入数据库密码!" type="password" />
+          <n-input id="password" v-model:value="sqlConnectObject.password" placeholder="请输入数据库密码!" type="password" />
         </n-form-item>
       </div>
       <n-form-item label="数据库名：">
-        <n-input id="databaseName" v-model:value="database.dbname" placeholder="请输入数据库名!" type="text" />
+        <n-input id="databaseName" v-model:value="sqlConnectObject.database" placeholder="请输入数据库名!" type="text" />
       </n-form-item>
     </n-form>
 
