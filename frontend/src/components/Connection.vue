@@ -21,28 +21,36 @@ const sqlConnectObject = reactive<SQLConnectObject>({
 let isSuccess = false;
 
 function connection() {
-  console.log(JSON.stringify(sqlConnectObject))
   Connection(JSON.stringify(sqlConnectObject)).then(result => {
-    if (result.substring(0, 12) == "Successfully") {
+    console.log(result)
+    let resultObj = JSON.parse(result)
+    console.log(resultObj)
+
+
+    let retCode = resultObj.code
+    let retData = resultObj.data
+    let retMessage = resultObj.message
+    console.log(retCode == "200")
+
+    if (retCode == "200") {
       // 1. 连接成功，弹出提示信息
-      message.success(result);
+      message.success(retMessage);
 
       // 2. 修改连接状态
       isSuccess = true;
-
     } else {
       // 连接失败，弹出提示框
-      message.error(result)
+      message.error(retMessage)
     }
   })
 }
 
 // 数据库类型列表
 const dbTypeOptions = [
-  { label: "MySQL", value: 'mysql' },
-  { label: "Oracle", value: 'oracle', disabled: true },
-  { label: "DM8", value: 'dm8', disabled: true },
-  { label: "Other", value: 'other', disabled: true },
+  {label: "MySQL", value: 'mysql'},
+  {label: "Oracle", value: 'oracle', disabled: true},
+  {label: "DM8", value: 'dm8', disabled: true},
+  {label: "Other", value: 'other', disabled: true},
 ];
 
 // 重置
@@ -71,19 +79,19 @@ function submit() {
   setTimeout(function () {
   }, 1000);
 
-  router.push({ name: "Execute" })
+  router.push({name: "Execute"})
 }
 
 // 监视器
 watch(
-  () => sqlConnectObject,
-  (newValue, oldValue) => {
-    // database 发生变化后，这里被调用
-    isSuccess = false;
-  }, {
-  immediate: false,
-  deep: true,
-})
+    () => sqlConnectObject,
+    (newValue, oldValue) => {
+      // database 发生变化后，这里被调用
+      isSuccess = false;
+    }, {
+      immediate: false,
+      deep: true,
+    })
 </script>
 
 <template>
@@ -95,27 +103,28 @@ watch(
 
       <n-form-item label="数据库类型">
         <n-select v-model:value="sqlConnectObject.driver" :options="dbTypeOptions" placeholder="请选择您的数据库驱动!"
-          type="text" />
+                  type="text"/>
       </n-form-item>
 
       <n-form-item label="地址(IP)：">
-        <n-input id="host" v-model:value="sqlConnectObject.host" placeholder="请输入数据库的 IP 地址!" type="text" />
+        <n-input id="host" v-model:value="sqlConnectObject.host" placeholder="请输入数据库的 IP 地址!" type="text"/>
       </n-form-item>
 
       <n-form-item label="端口：">
-        <n-input id="port" v-model:value="sqlConnectObject.port" placeholder="请输入数据库的端口!" type="text" />
+        <n-input id="port" v-model:value="sqlConnectObject.port" placeholder="请输入数据库的端口!" type="text"/>
       </n-form-item>
 
       <n-form-item label="用户名：">
-        <n-input id="username" v-model:value="sqlConnectObject.username" placeholder="请输入数据库用户名!" type="text" />
+        <n-input id="username" v-model:value="sqlConnectObject.username" placeholder="请输入数据库用户名!" type="text"/>
       </n-form-item>
       <div>
         <n-form-item label="密码：">
-          <n-input id="password" v-model:value="sqlConnectObject.password" placeholder="请输入数据库密码!" type="password" />
+          <n-input id="password" v-model:value="sqlConnectObject.password" placeholder="请输入数据库密码!"
+                   type="password"/>
         </n-form-item>
       </div>
       <n-form-item label="数据库名：">
-        <n-input id="databaseName" v-model:value="sqlConnectObject.database" placeholder="请输入数据库名!" type="text" />
+        <n-input id="databaseName" v-model:value="sqlConnectObject.database" placeholder="请输入数据库名!" type="text"/>
       </n-form-item>
     </n-form>
 
